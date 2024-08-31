@@ -1,10 +1,10 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { getCurrentUser, loginUser, logoutUser, registerUser } from '../services/api';
 import { User } from '../interfaces';
+import { useLoading } from '../hooks/useLoading';
 
 interface AuthContextType {
   user: User | null;
-  loading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
@@ -20,7 +20,8 @@ const AUTH_EXPIRATION_KEY = 'auth_expiration';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { setIsLoading } = useLoading();
+
   const [error, setError] = useState<string | null>(null);
   const saveUserToStorage = (user: User) => {
     localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
@@ -34,21 +35,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const checkAuthStatus = useCallback(async () => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     const storedUser = localStorage.getItem(AUTH_STORAGE_KEY);
     const expirationTime = localStorage.getItem(AUTH_EXPIRATION_KEY);
-
     if (storedUser && expirationTime) {
       if (new Date().getTime() < parseInt(expirationTime, 10)) {
         setUser(JSON.parse(storedUser));
-        setLoading(false);
+        setIsLoading(false);
         return;
       } else {
         removeUserFromStorage();
       }
     }
-
     try {
       const currentUser = await getCurrentUser();
       setUser(currentUser);
@@ -57,12 +56,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
       setError('Failed to fetch user data');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, []);
+  }, [setIsLoading]);
 
   const login = async (email: string, password: string) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const user = await loginUser(email, password);
@@ -72,12 +71,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setError('Login failed. Please check your credentials.');
       throw err;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const register = async (email: string, password: string) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const user = await registerUser(email, password);
@@ -87,15 +86,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setError('Registration failed. Please try again.');
       throw err;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   const logout = async () => {
-    setLoading(true);
+    setIsLoading(true);
     removeUserFromStorage();
     setUser(null);
-    setLoading(false);
+    setIsLoading(false);
     try {
       await logoutUser();
     } catch (err) {
@@ -118,7 +117,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     register,
     logout,
     checkAuthStatus,
-    loading,
     error,
     clearError,
   };

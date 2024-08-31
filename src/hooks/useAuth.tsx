@@ -8,7 +8,7 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
 
-  const { user, login, register, logout, checkAuthStatus, loading, error, clearError } = context;
+  const { user, login, register, logout, checkAuthStatus, error, clearError } = context;
 
   useEffect(() => {
     const checkAuthInterval = setInterval(() => {
@@ -18,5 +18,5 @@ export const useAuth = () => {
     return () => clearInterval(checkAuthInterval);
   }, [checkAuthStatus]);
 
-  return { user, login, register, logout, checkAuthStatus, loading, error, clearError };
+  return { user, login, register, logout, checkAuthStatus, error, clearError };
 };

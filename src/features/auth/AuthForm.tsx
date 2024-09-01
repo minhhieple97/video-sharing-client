@@ -1,6 +1,6 @@
 import React from 'react';
-import { useFormContainer } from '../../ui/form/FormContainer';
-import { Form } from '../../ui/form/Form';
+import { useFormContainer } from '../../components/form/FormContainer';
+import { Form } from '../../components/form/Form';
 
 export const AuthForm: React.FC = () => {
   const { formState, handleChange, handleSubmit, error, isLogin, toggleForm } = useFormContainer({

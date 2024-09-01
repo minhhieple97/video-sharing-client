@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Layout } from './ui/Layout';
 import PrivateRoute from './ui/PrivateRoute';
 import { VideoList } from './features/video/VideoList';
-import { LoginForm } from './features/auth/LoginForm';
+import { AuthForm } from './features/auth/AuthForm';
 import { LoadingOverlay } from './ui/LoadingOverlay';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <LoadingOverlay />
       <Routes>
         <Route path="/" element={<VideoList />} />
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/auth" element={<AuthForm />} />
         <Route element={<PrivateRoute />}>{/* Add private routes here */}</Route>
       </Routes>
     </Layout>

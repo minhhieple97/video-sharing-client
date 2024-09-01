@@ -1,5 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import { AUTH_CHECK_INTERVAL } from '../constants';
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -8,15 +9,15 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
 
-  const { user, login, register, logout, checkAuthStatus, error, clearError } = context;
+  const { user, checkAuthStatus, error, clearError, setUser } = context;
 
   useEffect(() => {
     const checkAuthInterval = setInterval(() => {
       checkAuthStatus();
-    }, 5 * 60 * 1000);
+    }, AUTH_CHECK_INTERVAL);
 
     return () => clearInterval(checkAuthInterval);
   }, [checkAuthStatus]);
 
-  return { user, login, register, logout, checkAuthStatus, error, clearError };
+  return { user, checkAuthStatus, error, clearError, setUser };
 };

@@ -1,9 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
-import { Layout } from './ui/Layout';
-import PrivateRoute from './ui/PrivateRoute';
+import PrivateRoute from './components/common/PrivateRoute';
 import { VideoList } from './features/video/VideoList';
 import { AuthForm } from './features/auth/AuthForm';
-import { LoadingOverlay } from './ui/LoadingOverlay';
+
+import ShareVideoForm from './features/video/ShareVideoForm';
+import { Layout } from './components/common/Layout';
+import { LoadingOverlay } from './components/ui/LoadingOverlay';
+import { GuestRoute } from './components/common/GuestRoute';
 
 function App() {
   return (
@@ -11,8 +14,12 @@ function App() {
       <LoadingOverlay />
       <Routes>
         <Route path="/" element={<VideoList />} />
-        <Route path="/auth" element={<AuthForm />} />
-        <Route element={<PrivateRoute />}>{/* Add private routes here */}</Route>
+        <Route element={<GuestRoute />}>
+          <Route path="/auth" element={<AuthForm />} />
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="/share" element={<ShareVideoForm />} />
+        </Route>
       </Routes>
     </Layout>
   );

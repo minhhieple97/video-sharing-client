@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useLoading } from '../../hooks/useLoading';
 import { loginUser, registerUser } from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
-import { saveUserToStorage } from '../../utils';
+import { saveUserToStorage } from '../../utils/helper';
+import { useNavigate } from 'react-router-dom';
 
 interface FormState {
   [key: string]: string;
@@ -14,6 +15,7 @@ export const useFormContainer = (initialState: FormState) => {
   const [error, setError] = useState<string | null>(null);
   const { setIsLoading } = useLoading();
   const { setUser } = useAuth();
+  const navigate = useNavigate();
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     setError(null);
@@ -21,9 +23,9 @@ export const useFormContainer = (initialState: FormState) => {
       const user = await loginUser(email, password);
       setUser(user);
       saveUserToStorage(user);
-    } catch (err) {
-      setError('Login failed. Please check your credentials.');
-      throw err;
+      navigate('/');
+    } catch (err: unknown) {
+      setError(err as string);
     } finally {
       setIsLoading(false);
     }
@@ -36,9 +38,9 @@ export const useFormContainer = (initialState: FormState) => {
       const user = await registerUser(email, password);
       setUser(user);
       saveUserToStorage(user);
-    } catch (err) {
-      setError('Registration failed. Please try again.');
-      throw err;
+      navigate('/');
+    } catch (err: unknown) {
+      setError(err as string);
     } finally {
       setIsLoading(false);
     }

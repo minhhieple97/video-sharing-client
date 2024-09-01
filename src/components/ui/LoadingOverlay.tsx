@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoading } from '../hooks/useLoading';
+import { useLoading } from '../../hooks/useLoading';
 
 export const LoadingOverlay: React.FC = () => {
   const { isLoading } = useLoading();

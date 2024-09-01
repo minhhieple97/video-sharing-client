@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { User } from '../interfaces';
-import { getUserFromStorage, removeUserFromStorage } from '../utils';
+import { getUserFromStorage, removeUserFromStorage } from '../utils/helper';
 
 interface AuthContextType {
   user: User | null;
@@ -19,6 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const checkAuthStatus = useCallback(async () => {
     const user = getUserFromStorage();
     if (!user) removeUserFromStorage();
+    setUser(user);
   }, []);
 
   const clearError = () => setError(null);

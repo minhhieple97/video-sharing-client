@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useLoading } from '../../hooks/useLoading';
 import { loginUser, registerUser } from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
 import { saveUserToStorage } from '../../utils/helper';
@@ -13,7 +12,7 @@ export const useFormContainer = (initialState: FormState) => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [formState, setFormState] = useState<FormState>(initialState);
   const [error, setError] = useState<string | null>(null);
-  const { setIsLoading } = useLoading();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { setUser } = useAuth();
   const navigate = useNavigate();
   const login = async (email: string, password: string) => {
@@ -67,5 +66,5 @@ export const useFormContainer = (initialState: FormState) => {
     setIsLogin(!isLogin);
   };
 
-  return { formState, handleChange, handleSubmit, error, isLogin, toggleForm };
+  return { formState, handleChange, handleSubmit, error, isLogin, toggleForm, isLoading };
 };

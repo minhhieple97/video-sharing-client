@@ -1,14 +1,16 @@
 import React from 'react';
 import { useFormContainer } from '../../components/form/FormContainer';
 import { Form } from '../../components/form/Form';
+import { Loading } from '../../components/ui/Loading';
 
 export const AuthForm: React.FC = () => {
-  const { formState, handleChange, handleSubmit, error, isLogin, toggleForm } = useFormContainer({
-    email: '',
-    password: '',
-    confirmPassword: '',
-  });
-
+  const { formState, handleChange, handleSubmit, error, isLogin, toggleForm, isLoading } =
+    useFormContainer({
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+  if (isLoading) return <Loading></Loading>;
   return (
     <div className="max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-5">{isLogin ? 'Login' : 'Register'}</h1>

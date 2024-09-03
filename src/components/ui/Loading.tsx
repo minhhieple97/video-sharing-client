@@ -1,11 +1,5 @@
 import React from 'react';
-import { useLoading } from '../../hooks/useLoading';
-
-export const LoadingOverlay: React.FC = () => {
-  const { isLoading } = useLoading();
-
-  if (!isLoading) return null;
-
+export const Loading: React.FC = () => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white bg-opacity-80 rounded-lg p-6 flex flex-col items-center">

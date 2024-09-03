@@ -5,7 +5,6 @@ import { AuthForm } from './features/auth/AuthForm';
 
 import ShareVideoForm from './features/share-video/ShareVideoForm';
 import { Layout } from './components/common/Layout';
-import { LoadingOverlay } from './components/ui/LoadingOverlay';
 import { GuestRoute } from './components/common/GuestRoute';
 import { SocketProvider } from './contexts/SocketContext';
 
@@ -13,7 +12,6 @@ function App() {
   return (
     <SocketProvider>
       <Layout>
-        <LoadingOverlay />
         <Routes>
           <Route path="/" element={<VideoList />} />
           <Route element={<GuestRoute />}>

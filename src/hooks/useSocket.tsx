@@ -16,11 +16,9 @@ export const useSocket = () => {
 
     socketRef.current = socket;
     const onConnect = () => {
-      console.log('connected');
       setIsConnected(true);
     };
     const onDisconnect = () => {
-      console.log('disconnected');
       setIsConnected(false);
     };
     const onConnectError = (error: unknown) => {

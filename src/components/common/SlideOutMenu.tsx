@@ -37,10 +37,6 @@ export const SlideOutMenu: React.FC<SlideOutMenuProps> = ({ isOpen, onClose }) =
                 <FaShareAlt className="mr-2" />
                 <span>Share a movie</span>
               </Link>
-              <button className="flex items-center text-left text-gray-700 hover:text-gray-900 transition duration-300 mb-4">
-                <FaBell className="mr-2" />
-                <span>Notifications</span>
-              </button>
               <button
                 onClick={logout}
                 className="flex items-center bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full transition duration-300 mt-auto"

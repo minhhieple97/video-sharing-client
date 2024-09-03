@@ -6,10 +6,13 @@ export interface AuthResponse extends User {
   token: string;
 }
 
-export interface VideoShareData {
-  youtubeId: string;
-  username: string;
+export interface INotificationFromServer {
+  id: string;
+  email: string;
   title: string;
+}
+export interface INotification extends INotificationFromServer {
+  id: string;
 }
 
 export interface Video {

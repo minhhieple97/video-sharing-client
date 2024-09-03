@@ -25,5 +25,5 @@ export const getVideos = async (skip: number, take: number): Promise<VideoListRe
 };
 
 export const shareVideo = async (youtubeLink: string) => {
-  await axiosInstance.post('/vides/share', { youtubeLink });
+  await axiosInstance.post('/videos/share', { youtubeLink });
 };

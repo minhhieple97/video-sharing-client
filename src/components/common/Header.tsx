@@ -1,17 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaBell, FaUserCircle, FaSignOutAlt, FaShareAlt, FaBars } from 'react-icons/fa';
+import { FaUserCircle, FaSignOutAlt, FaShareAlt, FaBars } from 'react-icons/fa';
 import { useAuth } from '../../hooks/useAuth';
 import { SlideOutMenu } from './SlideOutMenu';
 import { useLogout } from '../../hooks/useLogout';
+import { useSocketContext } from '../../hooks/useSocketContext';
+import { Notification } from '../../features/notification/Notification';
+import { INotification, INotificationFromServer } from '../../interfaces';
 
 export const Header: React.FC = () => {
   const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const { logout } = useLogout();
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const { socket, isConnected } = useSocketContext();
+  const [notifications, setNotifications] = useState<INotification[]>([]);
 
+  const removeNotification = (id: string) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((notification) => notification.id !== id),
+    );
+  };
+  useEffect(() => {
+    const onShareVideo = (data: INotificationFromServer) => {
+      const newNotification: INotification = {
+        id: Date.now().toString(),
+        email: data.email,
+        title: data.title,
+      };
+      setNotifications((prevNotifications) => [newNotification, ...prevNotifications]);
+    };
+    if (isConnected) {
+      socket?.on('share_video', onShareVideo);
+    }
+    return () => {
+      socket?.off('share_video', onShareVideo);
+    };
+  }, [isConnected, socket]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (notifications.length > 0) {
+        removeNotification(notifications[notifications.length - 1].id);
+      }
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [notifications]);
   return (
     <header className="bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg">
       <div className="container mx-auto px-4 py-3">
@@ -33,9 +68,6 @@ export const Header: React.FC = () => {
                   <FaShareAlt className="mr-2" />
                   Share a movie
                 </Link>
-                <button className="text-white hover:text-yellow-300 transition duration-300">
-                  <FaBell className="text-xl" />
-                </button>
                 <button
                   onClick={logout}
                   className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-full transition duration-300 flex items-center"
@@ -68,6 +100,11 @@ export const Header: React.FC = () => {
         </div>
       </div>
       <SlideOutMenu isOpen={isMenuOpen} onClose={() => setIsMenuOpen(false)} />
+      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 w-full max-w-sm z-50 max-h-screen overflow-y-auto">
+        {notifications.map((notification) => (
+          <Notification key={notification.id} data={notification} onClose={removeNotification} />
+        ))}
+      </div>
     </header>
   );
 };

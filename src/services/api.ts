@@ -23,3 +23,7 @@ export const getVideos = async (skip: number, take: number): Promise<VideoListRe
   const response = await axiosInstance.get<VideoListResponse>(`/videos?skip=${skip}&take=${take}`);
   return response.data;
 };
+
+export const shareVideo = async (youtubeLink: string) => {
+  await axiosInstance.post('/vides/share', { youtubeLink });
+};

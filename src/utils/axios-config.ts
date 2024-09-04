@@ -34,7 +34,6 @@ axiosInstance.interceptors.response.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    // You can process successful responses here if needed
     return response;
   },
   (error: AxiosError<ApiError>) => {
@@ -44,10 +43,8 @@ axiosInstance.interceptors.response.use(
       const { data } = error.response;
 
       if (Array.isArray(data.message)) {
-        // Handle ValidationError
         errorMessage = `${data.message.join(', ')}`;
       } else {
-        // Handle SingleMessageError
         errorMessage = data.message;
       }
     } else if (error.request) {

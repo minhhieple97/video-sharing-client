@@ -1,5 +1,4 @@
 import { io, Socket } from 'socket.io-client';
-import { VideoShareData } from '../interfaces';
 
 class SocketService {
   private static instance: SocketService;
@@ -23,12 +22,6 @@ class SocketService {
     if (this.socket) {
       this.socket.disconnect();
       this.socket = null;
-    }
-  }
-
-  public on(event: string, callback: (data: VideoShareData) => void): void {
-    if (this.socket) {
-      this.socket.on(event, callback);
     }
   }
 }

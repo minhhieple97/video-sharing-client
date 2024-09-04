@@ -7,10 +7,12 @@ export const useVideos = () => {
   const [videos, setVideos] = useState<Video[]>([]);
   const [skip, setSkip] = useState<number>(DEFAULT_SKIP);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [lastFetchedSkip, setLastFetchedSkip] = useState<number>(-1);
   const hasMoreRef = useRef<boolean>(true);
   const fetchVideos = useCallback(async () => {
-    if (loading || skip === lastFetchedSkip || !hasMoreRef.current) {
+    if (loading || skip === lastFetchedSkip || !hasMoreRef.current || error) {
       return;
     }
     setLoading(true);
@@ -24,11 +26,12 @@ export const useVideos = () => {
       }
     } catch (error) {
       console.error('Error fetching videos:', error);
+      setError(error as string);
     } finally {
       setLoading(false);
     }
-  }, [skip, loading, lastFetchedSkip]);
-
+  }, [skip, loading, lastFetchedSkip, error]);
+  console.log(videos, skip, lastFetchedSkip, loading);
   useEffect(() => {
     fetchVideos();
   }, [fetchVideos]);

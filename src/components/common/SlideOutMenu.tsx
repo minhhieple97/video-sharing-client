@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaUserCircle, FaShareAlt, FaBell, FaSignOutAlt, FaTimes } from 'react-icons/fa';
+import { FaUserCircle, FaShareAlt, FaSignOutAlt, FaTimes } from 'react-icons/fa';
 import { useAuth } from '../../hooks/useAuth';
 import { useLogout } from '../../hooks/useLogout';
 

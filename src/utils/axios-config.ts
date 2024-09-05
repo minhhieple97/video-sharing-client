@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios';
+import { getUserFromStorage } from './helper';
 const env = import.meta.env;
 const baseURL = env.VITE_BACKEND_URL;
 interface ValidationError {
@@ -20,13 +21,16 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// Request interceptor
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      console.log('Unauthorized access, redirecting to login...');
+// Request interceptor to attach token
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const user = getUserFromStorage();
+    if (user && user.token) {
+      config.headers['Authorization'] = `Bearer ${user.token}`;
     }
+    return config;
+  },
+  (error) => {
     return Promise.reject(error);
   },
 );

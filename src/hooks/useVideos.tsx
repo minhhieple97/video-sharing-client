@@ -31,7 +31,6 @@ export const useVideos = () => {
       setLoading(false);
     }
   }, [skip, loading, lastFetchedSkip, error]);
-  console.log(videos, skip, lastFetchedSkip, loading);
   useEffect(() => {
     fetchVideos();
   }, [fetchVideos]);

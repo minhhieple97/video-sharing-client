@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  video-sharing-client:
+  client:
     build:
       context: .
       dockerfile: Dockerfile

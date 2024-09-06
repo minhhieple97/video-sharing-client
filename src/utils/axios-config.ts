@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import { getUserFromStorage } from './helper';
-const env = import.meta.env;
-const baseURL = env.VITE_BACKEND_URL;
+const env = import.meta?.env;
+console.log({ env });
+const baseURL = env?.VITE_BACKEND_URL || 'http://localhost:3000';
 interface ValidationError {
   message: string[];
   error: string;

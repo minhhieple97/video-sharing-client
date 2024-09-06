@@ -3,7 +3,7 @@ import io, { Socket } from 'socket.io-client';
 import { useAuth } from './useAuth';
 
 const env = import.meta.env;
-const SOCKET_URL = env.VITE_SOCKET_URL;
+const SOCKET_URL = env?.VITE_SOCKET_URL || 'ws://localhost:3000';
 
 export const useSocket = () => {
   const [isConnected, setIsConnected] = useState(false);
